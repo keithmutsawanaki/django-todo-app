@@ -1,0 +1,86 @@
+{% extends 'todos/base.html' %}
+
+{% block content %}
+<div class="app-viewport" id="viewport">
+
+    <section class="page-section" id="page-login">
+        <div style="max-width: 400px; margin: 100px auto; text-align: center;">
+            <div class="orei-power-btn" style="margin: 0 auto 30px auto;">
+                <div class="power-symbol"></div> </div>
+            <h1 style="font-family: 'Playfair Display'; font-size: 2.5rem; color: var(--orei-gold);">Orei Spot</h1>
+            <p style="opacity: 0.6; margin-bottom: 40px;">Secure Access Portal</p>
+
+            <div class="input-container"><input type="text" placeholder="Full Name"></div>
+            <div class="input-container"><input type="email" placeholder="Email Address"></div>
+            <div class="input-container"><input type="password" placeholder="Access Code"></div>
+
+            <button onclick="navTo(1)" class="cinematic-card" style="width: 100%; background: var(--orei-gold); color: black; font-weight: 700; border: none; padding: 15px; cursor: pointer;">
+                ENTER SYSTEM
+            </button>
+        </div>
+    </section>
+
+    <section class="page-section" id="page-timeline">
+        <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 50px;">
+            <div>
+                <h1 style="font-family: 'Playfair Display'; font-size: 3rem; margin: 0;">16. Oct</h1>
+                <p style="color: var(--orei-gold); letter-spacing: 2px;">ACTIVE TIMELINE</p>
+            </div>
+            <div style="text-align: right;">
+                <span style="opacity: 0.5;">Progress</span>
+                <div class="progress-track" style="width: 200px;"><div class="progress-fill" style="--progress: {{ progress|default:0 }};"></div></div>
+            </div>
+        </div>
+
+        {% for todo in todos %}
+        <div class="cinematic-card" style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
+            <div style="display: flex; align-items: center; gap: 20px;">
+                <div style="width: 12px; height: 12px; border-radius: 50%; background: var(--glow-purple); box-shadow: 0 0 10px var(--glow-purple);"></div>
+                <h4 style="margin: 0; font-size: 1.3rem; font-weight: 300;">{{ todo.title }}</h4>
+            </div>
+            <form action="{% url 'todo_delete' todo.pk %}" method="POST">
+                {% csrf_token %}<button type="submit" style="background: none; border: none; color: #ff4d4d; cursor: pointer;">DELETE</button>
+            </form>
+        </div>
+        {% endfor %}
+    </section>
+
+    <section class="page-section" id="page-add">
+        <div style="max-width: 600px; margin: 0 auto;">
+            <h2 style="font-family: 'Playfair Display'; font-size: 2.5rem; color: var(--orei-gold);">New Task</h2>
+            <p style="opacity: 0.6; margin-bottom: 40px;">Add a new milestone to your project.</p>
+
+            <form method="post" action="{% url 'todo_create' %}">
+                {% csrf_token %}
+                <div class="input-container"><input type="text" name="title" placeholder="Task Nomenclature"></div>
+                <div class="input-container"><textarea name="description" placeholder="Strategy Details" style="background:transparent; border:none; width:100%; color:white; outline:none; font-family:inherit;" rows="4"></textarea></div>
+                
+                <button type="submit" class="cinematic-card" style="width: 100%; background: var(--glow-purple); color: white; border: none; padding: 20px; font-weight: bold; cursor: pointer;">
+                    CONFIRM ENTRY & PUBLISH
+                </button>
+            </form>
+        </div>
+    </section>
+
+</div>
+
+<div class="bottom-dock">
+    <div class="nav-btn" onclick="navTo(0)"><span>🔐</span><span>Login</span></div>
+    <div class="nav-btn active" onclick="navTo(1)"><span>📅</span><span>Timeline</span></div>
+    <div class="nav-btn" onclick="navTo(2)"><span>➕</span><span>Add</span></div>
+</div>
+
+<script>
+    function navTo(pageIndex) {
+        // Move the viewport horizontally
+        document.getElementById('viewport').style.transform = `translateX(-${pageIndex * 100}vw)`;
+        
+        // Update active states in dock
+        const btns = document.querySelectorAll('.nav-btn');
+        btns.forEach((btn, idx) => {
+            if(idx === pageIndex) btn.classList.add('active');
+            else btn.classList.remove('active');
+        });
+    }
+</script>
+{% endblock %}

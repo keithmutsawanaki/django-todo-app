@@ -1,0 +1,24 @@
+{% extends 'todos/base.html' %}
+
+{% block content %}
+<div class="orei-card">
+    <h2 class="orei-header" style="font-size: 32px;">New Task Entry</h2>
+    <p class="orei-subtitle">Define your next milestone below.</p>
+
+    <form method="post" class="formal-form">
+        {% csrf_token %}
+        
+        <div class="form-group">
+            <label>Task Nomenclature</label>
+            {{ form.title }}
+        </div>
+
+        <div style="display: flex; gap: 15px; margin-top: 20px;">
+            <button type="submit" class="btn-add-task" style="background: var(--orei-gold); color: white; border: none;">
+                Confirm Entry
+            </button>
+            <a href="{% url 'todo_list' %}" class="btn-add-task">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

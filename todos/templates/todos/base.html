@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Orei</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@300;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --deep-black: #080809;
+            --orei-purple: #2d1b4e;
+            --glow-purple: #7b2cbf;
+            --orei-gold: #c5a059;
+            --glass: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(197, 160, 89, 0.2);
+        }
+
+        body, html {
+            background-color: var(--deep-black);
+            color: #e0e0e0;
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Screen Wrapper */
+        .app-viewport {
+            display: flex;
+            width: 300vw;
+            height: 100vh;
+            transition: transform 0.8s cubic-bezier(0.85, 0, 0.15, 1);
+        }
+
+        .page-section {
+            width: 100vw;
+            height: 100vh;
+            overflow-y: auto;
+            padding: 60px 10%;
+            box-sizing: border-box;
+        }
+
+        /* Cinematic Input Containers */
+        .input-container {
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 5px 15px;
+            margin-bottom: 20px;
+            transition: 0.3s;
+        }
+
+        .input-container:focus-within {
+            border-color: var(--glow-purple);
+            box-shadow: 0 0 15px rgba(123, 44, 191, 0.3);
+        }
+
+        .input-container input {
+            background: transparent;
+            border: none;
+            color: white;
+            width: 100%;
+            padding: 12px 0;
+            outline: none;
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* Navigation */
+        .bottom-dock {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(10, 10, 11, 0.8);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 40px;
+            padding: 10px 30px;
+            display: flex;
+            gap: 40px;
+            z-index: 1000;
+        }
+
+        .nav-btn {
+            cursor: pointer;
+            opacity: 0.5;
+            transition: 0.3s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: white;
+            font-size: 10px;
+        }
+
+        .nav-btn.active { opacity: 1; color: var(--orei-gold); }
+
+        /* The Orei Spot Power Logo */
+        .orei-power-btn {
+            width: 45px; height: 45px;
+            background: var(--orei-gold);
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            margin-top: -25px;
+            box-shadow: 0 0 20px rgba(197, 160, 89, 0.5);
+        }
+    </style>
+</head>
+<body>
+    {% block content %}
+    {% endblock %}
+</body>
+</html>
