@@ -64,6 +64,22 @@
             outline: none;
             font-family: 'Inter', sans-serif;
         }
+        .cinematic-card {
+        background: var(--glass);
+        backdrop-filter: blur(15px);
+        border: 1px solid var(--glass-border);
+        border-radius: 20px;
+        padding: 25px;
+        transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        position: relative;
+    }
+
+        .cinematic-card:hover {
+        transform: translateY(-12px) scale(1.02);
+        border-color: var(--orei-gold);
+        /* Multi-layered Gradient Glow */
+        box-shadow: 0 20px 40px rgba(123, 44, 191, 0.2), 
+                    0 0 20px rgba(197, 160, 89, 0.5);}
 
         /* Navigation */
         .bottom-dock {

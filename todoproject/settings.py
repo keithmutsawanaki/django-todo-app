@@ -32,7 +32,7 @@ DATABASES = {
 SECRET_KEY = 'django-insecure-+29jb%st-i)&2g4c4&k)5bsh=)f&+m*4n$z4oegxi5$1za&4zi'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get('DEBUG', 'False') == 'True'
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -65,7 +65,7 @@ ROOT_URLCONF = 'todoproject.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'todos' / 'templates' / 'todos'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

@@ -1,22 +1,14 @@
-{% extends 'todos/base.html' %}
+{% extends 'base.html' %}
 
 {% block content %}
 <div class="app-viewport" id="viewport">
 
     <section class="page-section" id="page-login">
         <div style="max-width: 400px; margin: 100px auto; text-align: center;">
-            <div class="orei-power-btn" style="margin: 0 auto 30px auto;">
-                <div class="power-symbol"></div> </div>
-            <h1 style="font-family: 'Playfair Display'; font-size: 2.5rem; color: var(--orei-gold);">Orei Spot</h1>
-            <p style="opacity: 0.6; margin-bottom: 40px;">Secure Access Portal</p>
-
-            <div class="input-container"><input type="text" placeholder="Full Name"></div>
-            <div class="input-container"><input type="email" placeholder="Email Address"></div>
+            <h1 style="font-family: 'Playfair Display'; font-size: 3rem; color: var(--orei-gold);">Orei Spot</h1>
+            <div class="input-container"><input type="text" placeholder="Identity Name"></div>
             <div class="input-container"><input type="password" placeholder="Access Code"></div>
-
-            <button onclick="navTo(1)" class="cinematic-card" style="width: 100%; background: var(--orei-gold); color: black; font-weight: 700; border: none; padding: 15px; cursor: pointer;">
-                ENTER SYSTEM
-            </button>
+            <button onclick="navTo(1)" class="cinematic-card" style="width: 100%; background: var(--orei-gold); color: black; font-weight: 700; border: none; cursor: pointer;">INITIALIZE SYSTEM</button>
         </div>
     </section>
 
@@ -24,22 +16,31 @@
         <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 50px;">
             <div>
                 <h1 style="font-family: 'Playfair Display'; font-size: 3rem; margin: 0;">16. Oct</h1>
-                <p style="color: var(--orei-gold); letter-spacing: 2px;">ACTIVE TIMELINE</p>
+                <p style="color: var(--orei-gold); letter-spacing: 2px; font-weight: 600;">ACTIVE OPERATIONS</p>
             </div>
             <div style="text-align: right;">
-                <span style="opacity: 0.5;">Progress</span>
-                <div class="progress-track" style="width: 200px;"><div class="progress-fill" style="--progress: {{ progress|default:0 }};"></div></div>
+                <span style="opacity: 0.5; font-size: 12px;">SYSTEM PROGRESS</span>
+<!-- progress bar -->
+                <div class="progress-track"><div class="progress-fill" style="--progress-width: {{ progress }}%;"></div></div>
             </div>
         </div>
 
         {% for todo in todos %}
         <div class="cinematic-card" style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
             <div style="display: flex; align-items: center; gap: 20px;">
-                <div style="width: 12px; height: 12px; border-radius: 50%; background: var(--glow-purple); box-shadow: 0 0 10px var(--glow-purple);"></div>
-                <h4 style="margin: 0; font-size: 1.3rem; font-weight: 300;">{{ todo.title }}</h4>
+                <a href="{% url 'todo_toggle' todo.pk %}" onclick="setTargetPage(1)" style="text-decoration: none;">
+                    <div class="tick-indicator {% if todo.completed %}completed{% endif %}">
+                        {% if todo.completed %}
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="4"><path d="M20 6L9 17l-5-5"/></svg>
+                        {% endif %}
+                    </div>
+                </a>
+                <h4 class="{% if todo.completed %}todo-completed{% endif %}" style="margin: 0; font-size: 1.3rem; font-weight: 300;">{{ todo.title }}</h4>
             </div>
-            <form action="{% url 'todo_delete' todo.pk %}" method="POST">
-                {% csrf_token %}<button type="submit" style="background: none; border: none; color: #ff4d4d; cursor: pointer;">DELETE</button>
+            
+            <form action="{% url 'todo_delete' todo.pk %}" method="POST" onsubmit="setTargetPage(1)">
+                {% csrf_token %}
+                <button type="submit" style="background: none; border: none; color: #ff4d4d; cursor: pointer; font-weight: 600; font-size: 11px; letter-spacing: 1px;">DELETE</button>
             </form>
         </div>
         {% endfor %}
@@ -47,17 +48,13 @@
 
     <section class="page-section" id="page-add">
         <div style="max-width: 600px; margin: 0 auto;">
-            <h2 style="font-family: 'Playfair Display'; font-size: 2.5rem; color: var(--orei-gold);">New Task</h2>
-            <p style="opacity: 0.6; margin-bottom: 40px;">Add a new milestone to your project.</p>
-
-            <form method="post" action="{% url 'todo_create' %}">
+            <h2 style="font-family: 'Playfair Display'; font-size: 2.5rem; color: var(--orei-gold);">New Entry</h2>
+            <form method="post" action="{% url 'todo_create' %}" onsubmit="setTargetPage(1)">
                 {% csrf_token %}
-                <div class="input-container"><input type="text" name="title" placeholder="Task Nomenclature"></div>
-                <div class="input-container"><textarea name="description" placeholder="Strategy Details" style="background:transparent; border:none; width:100%; color:white; outline:none; font-family:inherit;" rows="4"></textarea></div>
+                <div class="input-container"><input type="text" name="title" placeholder="Designation" required></div>
+                <div class="input-container"><textarea name="description" placeholder="Operational Strategy" rows="4"></textarea></div>
                 
-                <button type="submit" class="cinematic-card" style="width: 100%; background: var(--glow-purple); color: white; border: none; padding: 20px; font-weight: bold; cursor: pointer;">
-                    CONFIRM ENTRY & PUBLISH
-                </button>
+                <button type="submit" class="cinematic-card" style="width: 100%; background: var(--glow-purple); color: white; border: none; font-weight: bold; cursor: pointer;">CONFIRM & PUBLISH</button>
             </form>
         </div>
     </section>
@@ -65,22 +62,33 @@
 </div>
 
 <div class="bottom-dock">
-    <div class="nav-btn" onclick="navTo(0)"><span>🔐</span><span>Login</span></div>
+    <div class="nav-btn" onclick="navTo(0)"><span>🔐</span><span>Portal</span></div>
     <div class="nav-btn active" onclick="navTo(1)"><span>📅</span><span>Timeline</span></div>
-    <div class="nav-btn" onclick="navTo(2)"><span>➕</span><span>Add</span></div>
+    <div class="nav-btn" onclick="navTo(2)"><span>➕</span><span>Generate</span></div>
 </div>
 
 <script>
     function navTo(pageIndex) {
-        // Move the viewport horizontally
         document.getElementById('viewport').style.transform = `translateX(-${pageIndex * 100}vw)`;
         
-        // Update active states in dock
+        // Save the current page to storage
+        localStorage.setItem('orei_active_index', pageIndex);
+        
         const btns = document.querySelectorAll('.nav-btn');
         btns.forEach((btn, idx) => {
-            if(idx === pageIndex) btn.classList.add('active');
-            else btn.classList.remove('active');
+            btn.classList.toggle('active', idx === pageIndex);
         });
     }
+
+    // This forces the app to load into a specific page after a refresh (Add/Delete)
+    function setTargetPage(index) {
+        localStorage.setItem('orei_active_index', index);
+    }
+
+    // Run on every page load
+    window.onload = function() {
+        const savedIndex = localStorage.getItem('orei_active_index') || 0;
+        navTo(parseInt(savedIndex));
+    };
 </script>
 {% endblock %}

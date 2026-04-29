@@ -15,7 +15,7 @@ class TodoListView(ListView):
         total = Todo.objects.count()
         completed = Todo.objects.filter(completed=True).count()
         # Calculate percentage
-        context['progress'] = (completed / total * 100) if total > 0 else 0
+        context['progress'] = int((completed / total * 100) if total > 0 else 0)
         return context
 
 
